@@ -1,4 +1,7 @@
 import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
+import dotenv from 'dotenv';
+dotenv.config();
 
 import db from '../database/db.js';
 
@@ -24,13 +27,19 @@ export async function signinController(req, res){
     try{
         const {rows} = await db.query('SELECT * FROM users WHERE email=$1;', [email]);
         const hash = rows[0].password;
-        const invalidPassword = await bcrypt.compare(password, hash);
+        const validPassword = await bcrypt.compare(password, hash);
 
-        if(!hash || invalidPassword) return res.sendStatus(401);
+        if(!hash || !validPassword) return res.sendStatus(401);
+
+        const result = await db.query('INSERT INTO sessions ("userId") VALUES ($1) RETURNING id;', [rows[0].id]);
+        const {id} = result.rows[0];
+
+        const token = jwt.sign({ id }, process.env.JWT_SECRET);
+        return res.send({token});
 
     }catch(err){
         return res.status(500).send(err.message);
     }
 
-    
+
 }
