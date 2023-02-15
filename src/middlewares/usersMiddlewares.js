@@ -1,4 +1,4 @@
-import { userSchema } from "../model/userSchema.js";
+import { userSchema, signinSchema } from "../model/userSchema.js";
 import db from '../database/db.js';
 
 export async function signupMiddleware(req, res, next){
@@ -20,4 +20,17 @@ export async function signupMiddleware(req, res, next){
 
     }
     next();
+}
+
+export async function signinMiddleware(req, res, next){
+
+    const user = req.body;
+    const {error} = signinSchema.validate(user, {abortEarly: false});
+
+    if(error){
+        const errorMessages = error.details.map((obj) => obj.message);
+        return res.status(422).send(errorMessages);
+    }
+
+    next()
 }
