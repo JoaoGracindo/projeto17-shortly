@@ -8,8 +8,8 @@ export default async function auth(req, res, next){
     const token = req.headers.authorization?.replace('Bearer ', '');
     
     try{
-       const sessionId = jwt.verify(token, process.env.JWT_SECRET);
-       const {rows} = await db.query('SELECT * FROM sessions WHERE id=$1;', [sessionId]);
+       const {id} = jwt.verify(token, process.env.JWT_SECRET);
+       const {rows} = await db.query('SELECT * FROM sessions WHERE id=$1;', [id]);
        const {userId} = rows[0];
        res.locals.userId = userId;
 
