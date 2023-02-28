@@ -13,7 +13,20 @@ export async function postUrlController(req, res){
                                     [userId, url, shortUrl]);
         const info = insertion.rows[0];
         return res.status(201).send(info);
-        
+
+    }catch(err){
+        return res.status(500).send(err.message);
+    }
+}
+
+export async function deleteUrlController(req, res){
+
+    const {id} = req.params;
+    const {userId} = res.locals;
+
+    try{
+        await db.query('DELETE FROM urls WHERE id=$1 AND "userId"=$2;', [id, userId]);
+        return res.sendStatus(204);
     }catch(err){
         return res.status(500).send(err.message);
     }
