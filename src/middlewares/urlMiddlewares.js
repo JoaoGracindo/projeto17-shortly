@@ -23,8 +23,8 @@ export async function deleteUrlMiddleware(req, res, next){
         const {rows} = await db.query('SELECT "userId" FROM urls WHERE id=$1;', [id]);
 
         if(!rows[0]) return res.sendStatus(404);
-        if(userId !== rows[0]) return res.sendStatus(401);
-        
+        if(userId !== rows[0].userId) return res.sendStatus(401);
+
     }catch(err){
         return res.status(500).send(err.message);
     }

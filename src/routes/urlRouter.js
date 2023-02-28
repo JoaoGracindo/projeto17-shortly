@@ -1,13 +1,13 @@
 import { Router } from "express";
 
 import authentication from '../middlewares/authMiddleware.js';
-import {postUrlMiddleware} from '../middlewares/urlMiddlewares.js';
-import { postUrlController } from "../controllers/authUrlControllers.js";
+import {postUrlMiddleware, deleteUrlMiddleware} from '../middlewares/urlMiddlewares.js';
+import { postUrlController, deleteUrlController } from "../controllers/authUrlControllers.js";
 
 const router = Router();
 
 router.use(authentication);
 router.post('/urls/shorten', postUrlMiddleware, postUrlController);
-router.delete('/urls/:id');
+router.delete('/urls/:id', deleteUrlMiddleware, deleteUrlController);
 
 export default router;
