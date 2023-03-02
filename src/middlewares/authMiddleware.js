@@ -4,11 +4,13 @@ dotenv.config();
 
 import db from "../database/db.js";
 
+const secretKey = process.env.JWT_SECRET ?? 'NsmiNcjD6yWJvmBX2Whbd1';
+
 export default async function auth(req, res, next){
     const token = req.headers.authorization?.replace('Bearer ', '');
     
     try{
-       const {id} = jwt.verify(token, process.env.JWT_SECRET);
+       const {id} = jwt.verify(token, secretKey);
        const {rows} = await db.query('SELECT * FROM sessions WHERE id=$1;', [id]);
        const {userId} = rows[0];
        res.locals.userId = userId;

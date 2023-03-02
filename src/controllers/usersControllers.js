@@ -5,6 +5,8 @@ dotenv.config();
 
 import db from '../database/db.js';
 
+const secretKey = process.env.JWT_SECRET ?? 'NsmiNcjD6yWJvmBX2Whbd1';
+
 export async function signupController(req, res){
 
     const {name, email, password} = req.body;
@@ -34,7 +36,7 @@ export async function signinController(req, res){
         const result = await db.query('INSERT INTO sessions ("userId") VALUES ($1) RETURNING id;', [rows[0].id]);
         const {id} = result.rows[0];
 
-        const token = jwt.sign({ id }, process.env.JWT_SECRET);
+        const token = jwt.sign({ id }, secretKey);
         return res.send({token});
 
     }catch(err){
