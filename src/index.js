@@ -13,7 +13,7 @@ app.use(json());
 app.use(cors());
 
 app.use(userRouter);
-app.use(authUrlRouter);
 app.use(urlRouter);
+app.use(authUrlRouter);
 
 app.listen(process.env.PORT, () => console.log(`Server is running on port ${process.env.PORT}...`));
