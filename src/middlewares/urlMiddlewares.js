@@ -1,10 +1,5 @@
-import Joi from "joi";
-
 import db from '../database/db.js';
-
-const schema = Joi.object({
-    url: Joi.string().pattern(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/).required()
-});
+import {urlSchema as schema} from '../model/urlModel.js';
 
 export function postUrlMiddleware(req, res, next){
 

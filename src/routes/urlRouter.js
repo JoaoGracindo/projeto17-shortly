@@ -7,6 +7,7 @@ import { postUrlController, deleteUrlController } from "../controllers/authUrlCo
 const router = Router();
 
 router.use(authentication);
+router.get('/users/me');
 router.post('/urls/shorten', postUrlMiddleware, postUrlController);
 router.delete('/urls/:id', deleteUrlMiddleware, deleteUrlController);
 

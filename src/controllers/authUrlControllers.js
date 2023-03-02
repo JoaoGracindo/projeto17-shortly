@@ -2,6 +2,28 @@ import { nanoid } from "nanoid";
 
 import db from '../database/db.js';
 
+export async function getMyUrlsController(req, res){
+
+    const {userId} = res.locals;
+
+    try{
+        const {rows: userQuery} = await db.query('SELECT id, name FROM users WHERE id=$1;', [userId]);
+        const {rows: visitCountQuery} = await db.query('SELECT SUM("visitCount") AS "visitCount" FROM urls WHERE "userId"=$1;', [userId]);
+        const {rows: shortenedUrls} = await db.query('SELECT id, "shortUrl", url, "visitCount" FROM urls WHERE "userId"=$1;', [userId]);
+
+        const response = {
+            ...userQuery,
+            ...visitCountQuery,
+            shortenedUrls
+        };
+
+        return res.status(200).send(response);
+        
+    }catch(err){
+        return res.status(500).send(err.message);
+    }
+}
+
 export async function postUrlController(req, res){
     
     const {userId} = res.locals;
