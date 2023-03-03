@@ -34,10 +34,7 @@ export async function rankingController(req, res){
 
     try{
         const {rows} = await db.query('SELECT u.id, u.name, COUNT(l.id) AS "linksCount", SUM(l."visitCount") AS "visitCount" FROM users u LEFT JOIN urls l ON u.id=l."userId" GROUP BY u.id ORDER BY "visitCount" ASC LIMIT 10;');
-        // const names = [];
-        // for(let i = 0; i < rows.length; i++){
-        //     names.push(rows[i].name);
-        // }
+
         return res.status(200).send(rows);
 
     }catch(err){
