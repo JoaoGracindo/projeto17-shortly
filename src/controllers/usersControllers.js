@@ -28,7 +28,7 @@ export async function signinController(req, res){
 
     try{
         const {rows} = await db.query('SELECT * FROM users WHERE email=$1;', [email]);
-        const hash = rows[0].password;
+        const hash = rows[0]?.password;
         const validPassword = await bcrypt.compare(password, hash);
 
         if(!hash || !validPassword) return res.sendStatus(401);

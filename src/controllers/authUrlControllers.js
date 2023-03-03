@@ -12,8 +12,8 @@ export async function getMyUrlsController(req, res){
         const {rows: shortenedUrls} = await db.query('SELECT id, "shortUrl", url, "visitCount" FROM urls WHERE "userId"=$1;', [userId]);
 
         const response = {
-            ...userQuery,
-            ...visitCountQuery,
+            ...userQuery[0],
+            ...visitCountQuery[0],
             shortenedUrls
         };
 
