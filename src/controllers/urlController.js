@@ -20,9 +20,9 @@ export async function redirectController(req, res){
 
     try{
         const {rows} = await db.query('UPDATE urls SET "visitCount"="visitCount"+1 WHERE "shortUrl"=$1 RETURNING url;', [shortUrl]);
+        if(!rows[0]) return res.sendStatus(404);
+        
         const {url} = rows[0];
-
-        if(!url[0]) return res.sendStatus(404);
         return res.redirect(url);
 
     }catch(err){
