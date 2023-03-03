@@ -33,7 +33,11 @@ export async function rankingController(req, res){
 
     try{
         const {rows} = await db.query('SELECT u.id, u.name, COUNT(l.id) AS "linksCount", SUM(l."visitCount") AS "visitCount" FROM users u JOIN urls l ON u.id=l."userId" GROUP BY u.id ORDER BY "visitCount" LIMIT 10;');
-        return res.status(200).send(rows);
+        const names = [];
+        for(let i = 0; i < rows.length; i++){
+            names.push(rows[i].name);
+        }
+        return res.status(200).send(names);
 
     }catch(err){
         return res.status(500).send(err.message);
