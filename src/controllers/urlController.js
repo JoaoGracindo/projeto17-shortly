@@ -33,7 +33,7 @@ export async function redirectController(req, res){
 export async function rankingController(req, res){
 
     try{
-        const {rows} = await db.query('SELECT u.id, u.name, COUNT(l.id) AS "linksCount", SUM(l."visitCount") AS "visitCount" FROM users u LEFT JOIN urls l ON u.id=l."userId" GROUP BY u.id ORDER BY "visitCount" ASC LIMIT 10;');
+        const {rows} = await db.query('SELECT u.id, u.name, COUNT(l.id) AS "linksCount", SUM("visitCount") AS "visitCount" FROM users u LEFT JOIN urls l ON u.id=l."userId" GROUP BY u.id ORDER BY "visitCount" ASC LIMIT 10;');
 
         return res.status(200).send(rows);
 
